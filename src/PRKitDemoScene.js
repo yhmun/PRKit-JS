@@ -49,7 +49,7 @@ msw.PRKitDemoScene = cc.Scene.extend
 
 		var		Texture = cc.textureCache.addImage ( "res/pattern1.png" );
 
-		var		FilledPolygon = new msw.PRFilledPolygon ( Points, Texture );
+		var		FilledPolygon = new cc.PRFilledPolygon ( Points, Texture );
 		this.addChild ( FilledPolygon ); 
 	}
 });

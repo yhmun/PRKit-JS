@@ -36,9 +36,9 @@
  *
  * ----------------------------------------------------------------------------------- */ 
 
-msw.EPSILON = 0.0000000001;
+cc.EPSILON = 0.0000000001;
 
-msw.Triangulate = 
+cc.Triangulate = 
 {
 		// compute area of a contour/polygon
 		Area:function ( Contours )
@@ -106,7 +106,7 @@ msw.Triangulate =
 				Px = Contours [ V[p] ].x;
 				Py = Contours [ V[p] ].y;
 
-				if ( msw.Triangulate.InsideTriangle ( Ax, Ay, Bx, By, Cx, Cy, Px, Py ) )
+				if ( cc.Triangulate.InsideTriangle ( Ax, Ay, Bx, By, Cx, Cy, Px, Py ) )
 				{
 					return false;
 				}
@@ -130,7 +130,7 @@ msw.Triangulate =
 			var		V = [];
 
 			// we want a counter-clockwise polygon in V 	
-			if ( 0.0 < msw.Triangulate.Area ( Contours ) )
+			if ( 0.0 < cc.Triangulate.Area ( Contours ) )
 			{
 				for ( var v = 0; v < n; v++ )
 				{
@@ -178,7 +178,7 @@ msw.Triangulate =
 					w = 0;     // next     
 				}
 
-				if ( msw.Triangulate.Snip ( Contours, u, v, w, nv, V ) )
+				if ( cc.Triangulate.Snip ( Contours, u, v, w, nv, V ) )
 				{
 					var		a, b, c, s, t;
 

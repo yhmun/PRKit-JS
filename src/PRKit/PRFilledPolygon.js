@@ -64,7 +64,7 @@ cc.GLNode = cc.GLNode || cc.Node.extend
 	}
 });
 
-msw.PRFilledPolygon = cc.GLNode.extend
+cc.PRFilledPolygon = cc.GLNode.extend
 ({
 	ctor:function ( Points, Texture )
 	{
@@ -112,7 +112,7 @@ msw.PRFilledPolygon = cc.GLNode.extend
 	setPoints:function ( Points )
 	{					
 		this.Points = [];
-		msw.Triangulate.Process ( Points, this.Points );	
+		cc.Triangulate.Process ( Points, this.Points );	
 
 		var		Vertices = [];
 		for ( var i = 0; i < this.Points.length; i++ )
