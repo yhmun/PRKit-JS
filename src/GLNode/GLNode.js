@@ -1,13 +1,9 @@
 /** ----------------------------------------------------------------------------------
  *
- *      File            PRKitDemoScene.js
+ *      File            GLNode.js
  *      Ported By       Young-Hwan Mun
  *      Contact         yh.msw9@gmail.com
  * 
- * -----------------------------------------------------------------------------------
- *   
- *      Created By      ChildhoodAndy on 14-4-16    
- *
  * -----------------------------------------------------------------------------------
  * 
  *      Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,27 +26,31 @@
  *
  * ----------------------------------------------------------------------------------- */ 
 
-msw.PRKitDemoScene = cc.Scene.extend
+cc.GLNode = cc.GLNode || cc.Node.extend
 ({
 	ctor:function ( )
 	{
 		this._super ( );
+		this.init ( );			
+	},
 
-		var 	ColorBg = new cc.LayerColor ( cc.color ( 125, 125, 125, 125 ) );
-		this.addChild ( ColorBg );
+	init:function ( )
+	{
+		this._renderCmd._needDraw = true;
+		this._renderCmd.rendering =  function ( ctx )
+		{
+			cc.kmGLMatrixMode ( cc.KM_GL_MODELVIEW );
+			cc.kmGLPushMatrix ( );
+			cc.kmGLLoadMatrix ( this._stackMatrix );
 
-		var		Points = [];
+			this._node.draw ( ctx );
 
-		Points.push ( cc.p ( 100, 100 ) );
-		Points.push ( cc.p ( 200, 100 ) );
-		Points.push ( cc.p ( 300, 200 ) );
-		Points.push ( cc.p ( 400, 300 ) );
-		Points.push ( cc.p ( 500, 500 ) );
+			cc.kmGLPopMatrix ( );
+		};
+	},
 
-		var		Texture = cc.textureCache.addImage ( "res/pattern1.png" );
-
-		var		FilledPolygon = new cc.PRFilledPolygon ( );
-		FilledPolygon.initWithPoints ( Points, Texture );
-		this.addChild ( FilledPolygon ); 
+	draw:function ( ctx )
+	{
+		this._super ( ctx );		
 	}
 });

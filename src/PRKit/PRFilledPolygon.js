@@ -35,38 +35,9 @@
  *
  * ----------------------------------------------------------------------------------- */ 
 
-cc.GLNode = cc.GLNode || cc.Node.extend
-({
-	ctor:function ( )
-	{
-		this._super ( );
-		this.init ( );			
-	},
-
-	init:function ( )
-	{
-		this._renderCmd._needDraw = true;
-		this._renderCmd.rendering =  function ( ctx )
-		{
-			cc.kmGLMatrixMode ( cc.KM_GL_MODELVIEW );
-			cc.kmGLPushMatrix ( );
-			cc.kmGLLoadMatrix ( this._stackMatrix );
-
-			this._node.draw ( ctx );
-
-			cc.kmGLPopMatrix ( );
-		};
-	},
-
-	draw:function ( ctx )
-	{
-		this._super ( ctx );		
-	}
-});
-
 cc.PRFilledPolygon = cc.GLNode.extend
 ({
-	ctor:function ( Points, Texture )
+	ctor:function ( )
 	{
 		this._super ( );	
 
@@ -74,9 +45,7 @@ cc.PRFilledPolygon = cc.GLNode.extend
 		this.Texture		= null;
 		this.BlendFunc		= null; 
 		this.VertexBuffer	= null;
-		this.TexCoordBuffer	= null;
-
-		this.initWithPoints ( Points, Texture );
+		this.TexCoordBuffer	= null;		
 	},
 
 	initWithPoints:function ( Points, Texture )

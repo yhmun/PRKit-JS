@@ -11,6 +11,7 @@
         "extensions"
     ],
     "jsList":[
+        "src/GLNode/GLNode.js",
         "src/PRKit/PRFilledPolygon.js",
         "src/PRKit/Triangulate.js",
         "src/PRKitDemoScene.js",
