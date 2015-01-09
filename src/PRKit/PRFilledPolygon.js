@@ -41,7 +41,7 @@ cc.PRFilledPolygon = cc.GLNode.extend
 	{
 		this._super ( );	
 
-		this.Points			= null;			
+		this.Points			= new Array ( );			
 		this.Texture		= null;
 		this.BlendFunc		= null; 
 		this.VertexBuffer	= null;
@@ -79,24 +79,17 @@ cc.PRFilledPolygon = cc.GLNode.extend
 	},
 
 	setPoints:function ( Points )
-	{					
-		this.Points = [];
+	{				
+		this.Points.splice ( 0, this.Points.length );		
 		cc.Triangulate.Process ( Points, this.Points );	
-
-		var		Vertices = [];
-		for ( var i = 0; i < this.Points.length; i++ )
-		{
-			Vertices [ i * 2 + 0 ] = this.Points [ i ].x;
-			Vertices [ i * 2 + 1 ] = this.Points [ i ].y;					
-		}		
-
+		
 		if ( this.VertexBuffer != null )
 		{
-			gl.deletBuffer ( this.VertexBuffer );
+			gl.deleteBuffer ( this.VertexBuffer );
 		}
 		this.VertexBuffer = gl.createBuffer ( );		
 		gl.bindBuffer ( gl.ARRAY_BUFFER, this.VertexBuffer );
-		gl.bufferData ( gl.ARRAY_BUFFER, new Float32Array ( Vertices ), gl.STATIC_DRAW );
+		gl.bufferData ( gl.ARRAY_BUFFER, new Float32Array ( this.Points ), gl.STATIC_DRAW );
 		gl.bindBuffer ( gl.ARRAY_BUFFER, null );
 
 		this.calculateTextureCoordinates ( );
@@ -104,22 +97,24 @@ cc.PRFilledPolygon = cc.GLNode.extend
 
 	calculateTextureCoordinates:function ( )
 	{
-		if ( this.Points == null )
+		if ( this.Points.length == 0 )
 		{
 			return;	
 		}
 
-		var		TexCoords = [];
-		for ( var i = 0; i < this.Points.length; i++ )
+		var		TexCoords = new Array ( this.Points.length );
+		for ( var i = 0; i < this.Points.length / 2; i++ )
 		{
-			TexCoords [ i * 2 + 0 ] = this.Points [ i ].x * 1.0 / this.Texture.getPixelsWide ( ) * cc.director.getContentScaleFactor ( );
-			TexCoords [ i * 2 + 1 ] = this.Points [ i ].y * 1.0 / this.Texture.getPixelsHigh ( ) * cc.director.getContentScaleFactor ( );			
-			TexCoords [ i * 2 + 1 ] = 1.0 - TexCoords [ i * 2 + 1 ];
+			var		offset = i * 2;
+			
+			TexCoords [ offset + 0 ] = this.Points [ offset + 0 ] * 1.0 / this.Texture.getPixelsWide ( ) * cc.director.getContentScaleFactor ( );
+			TexCoords [ offset + 1 ] = this.Points [ offset + 1 ] * 1.0 / this.Texture.getPixelsHigh ( ) * cc.director.getContentScaleFactor ( );			
+			TexCoords [ offset + 1 ] = 1.0 - TexCoords [ offset + 1 ];
 		}		
 
 		if ( this.TexCoordBuffer != null )
 		{
-			gl.deletBuffer ( this.TexCoordBuffer );
+			gl.deleteBuffer ( this.TexCoordBuffer );
 		}
 		this.TexCoordBuffer = gl.createBuffer ( );		
 		gl.bindBuffer ( gl.ARRAY_BUFFER, this.TexCoordBuffer );
@@ -133,16 +128,16 @@ cc.PRFilledPolygon = cc.GLNode.extend
 		{
 			this.BlendFunc = 
 			{
-					src : cc.SRC_ALPHA,
-					dst : cc.ONE_MINUS_SRC_ALPHA
+				src : cc.SRC_ALPHA,
+				dst : cc.ONE_MINUS_SRC_ALPHA
 			};					
 		}
 		else 
 		{
 			this.BlendFunc = 
 			{
-					src : cc.BLEND_SRC,
-					dst : cc.BLEND_DST
+				src : cc.BLEND_SRC,
+				dst : cc.BLEND_DST
 			};			
 		}	    
 	},
@@ -154,12 +149,12 @@ cc.PRFilledPolygon = cc.GLNode.extend
 	},
 
 	draw:function ( )
-	{
-		if ( this.Points.length < 2 )
+	{			
+		if ( this.Points.length < 4 )
 		{
 			return;
 		}
-
+		
 		this.Shader.use ( );
 		this.Shader.setUniformsForBuiltins ( );
 

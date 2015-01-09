@@ -39,14 +39,16 @@ msw.PRKitDemoScene = cc.Scene.extend
 		var 	ColorBg = new cc.LayerColor ( cc.color ( 125, 125, 125, 125 ) );
 		this.addChild ( ColorBg );
 
-		var		Points = [];
-
-		Points.push ( cc.p ( 100, 100 ) );
-		Points.push ( cc.p ( 200, 100 ) );
-		Points.push ( cc.p ( 300, 200 ) );
-		Points.push ( cc.p ( 400, 300 ) );
-		Points.push ( cc.p ( 500, 500 ) );
-
+		var		Points = 
+		[
+		  	100, 100,
+		  	100, 100,
+		  	200, 100,
+		  	300, 200,
+		  	400, 300,
+		  	500, 500
+		];
+		
 		var		Texture = cc.textureCache.addImage ( "res/pattern1.png" );
 
 		var		FilledPolygon = new cc.PRFilledPolygon ( );
