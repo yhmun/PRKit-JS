@@ -80,9 +80,24 @@ cc.PRFilledPolygon = cc.GLNode.extend
 
 	setPoints:function ( Points )
 	{				
-		this.Points.splice ( 0, this.Points.length );		
-		cc.Triangulate.Process ( Points, this.Points );	
+		var		Verts = null;
+		if ( (typeof Points [ 0 ]) == "object" )
+		{
+			Verts = new Array ( );
+			for ( var i = 0; i < Points.length; i++ )
+			{
+				Verts.push ( Points [ i ].x );
+				Verts.push ( Points [ i ].y );				
+			}	
+		}
+		else
+		{
+			Verts = Points;
+		}
 		
+		this.Points.splice ( 0, this.Points.length );		
+		cc.Triangulate.Process ( Verts, this.Points );	
+
 		if ( this.VertexBuffer != null )
 		{
 			gl.deleteBuffer ( this.VertexBuffer );
@@ -150,14 +165,14 @@ cc.PRFilledPolygon = cc.GLNode.extend
 
 	draw:function ( )
 	{			
-		if ( this.Points.length < 4 )
+		if ( this.Points.length <= 2 )
 		{
 			return;
 		}
 		
 		this.Shader.use ( );
 		this.Shader.setUniformsForBuiltins ( );
-
+	
 		gl.bindTexture ( gl.TEXTURE_2D, this.Texture.getName ( ) );		
 		gl.blendFunc ( this.BlendFunc.src, this.BlendFunc.dst );
 
@@ -168,9 +183,9 @@ cc.PRFilledPolygon = cc.GLNode.extend
 		gl.vertexAttribPointer ( cc.VERTEX_ATTRIB_POSITION, 2, gl.FLOAT, false, 0, 0 );
 
 		gl.bindBuffer ( gl.ARRAY_BUFFER, this.TexCoordBuffer );
-		gl.vertexAttribPointer ( cc.VERTEX_ATTRIB_TEX_COORDS, 2, gl.FLOAT, false, 0, 0 );
-
-		gl.drawArrays ( gl.TRIANGLES, 0, this.Points.length );
+		gl.vertexAttribPointer ( cc.VERTEX_ATTRIB_TEX_COORDS, 2, gl.FLOAT, false, 0, 0 );		
+		
+		gl.drawArrays ( gl.TRIANGLES, 0, this.Points.length / 2 );
 
 		gl.bindTexture ( gl.TEXTURE_2D  , null );
 		gl.bindBuffer  ( gl.ARRAY_BUFFER, null );

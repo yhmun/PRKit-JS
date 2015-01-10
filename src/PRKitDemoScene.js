@@ -42,17 +42,27 @@ msw.PRKitDemoScene = cc.Scene.extend
 		var		Points = 
 		[
 		  	100, 100,
-		  	100, 100,
 		  	200, 100,
 		  	300, 200,
 		  	400, 300,
 		  	500, 500
 		];
 		
+		var		Vertices = 
+		[
+		 	cc.p ( 100, 100 ),
+		 	cc.p ( 200, 100 ),
+		 	cc.p ( 300, 200 ),
+		 	cc.p ( 400, 300 ),
+		 	cc.p ( 500, 500 )
+		];
+		
+		var		Verts = 0 ? Points : Vertices;
+		
 		var		Texture = cc.textureCache.addImage ( "res/pattern1.png" );
 
 		var		FilledPolygon = new cc.PRFilledPolygon ( );
-		FilledPolygon.initWithPoints ( Points, Texture );
+		FilledPolygon.initWithPoints ( Verts, Texture );
 		this.addChild ( FilledPolygon ); 
 	}
 });

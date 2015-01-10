@@ -43,12 +43,12 @@ cc.Triangulate =
 		// compute area of a contour/polygon
 		Area:function ( Contours )
 		{	
-			var		n = Contours.length;
+			var		n = Contours.length / 2;
 			var		A = 0.0;
 
 			for ( var p = n - 1, q = 0; q < n; p = q++ )
 			{
-				A += Contours[p].x * Contours[q].y - Contours[q].x * Contours[p].y;
+				A += Contours [ p * 2 + 0 ] * Contours [ q * 2 + 1 ] - Contours [ q * 2 + 0 ] * Contours [ p * 2 + 1 ];
 			}
 
 			return A * 0.5;
@@ -73,7 +73,7 @@ cc.Triangulate =
 			aCROSSbp = ax * bpy - ay * bpx;
 			cCROSSap = cx * apy - cy * apx;
 			bCROSScp = bx * cpy - by * cpx;
-
+			
 			return ( ( aCROSSbp >= 0.0 ) && ( bCROSScp >= 0.0 ) && ( cCROSSap >= 0.0 ) );
 		},
 
@@ -82,16 +82,16 @@ cc.Triangulate =
 			var		p;
 			var		Ax, Ay, Bx, By, Cx, Cy, Px, Py;
 
-			Ax = Contours [ V[u] ].x;
-			Ay = Contours [ V[u] ].y;
+			Ax = Contours [ V[u] * 2 + 0 ];
+			Ay = Contours [ V[u] * 2 + 1 ];
 
-			Bx = Contours [ V[v] ].x;
-			By = Contours [ V[v] ].y;
+			Bx = Contours [ V[v] * 2 + 0 ];
+			By = Contours [ V[v] * 2 + 1 ];
 
-			Cx = Contours [ V[w] ].x;
-			Cy = Contours [ V[w] ].y;
+			Cx = Contours [ V[w] * 2 + 0 ];
+			Cy = Contours [ V[w] * 2 + 1 ];
 
-			if ( msw.EPSILON > ( ( ( Bx - Ax ) * ( Cy - Ay ) ) - ( ( By - Ay ) * ( Cx - Ax ) ) ) ) 
+			if ( cc.EPSILON > ( ( ( Bx - Ax ) * ( Cy - Ay ) ) - ( ( By - Ay ) * ( Cx - Ax ) ) ) ) 
 			{
 				return false;
 			}
@@ -103,9 +103,9 @@ cc.Triangulate =
 					continue;
 				}
 
-				Px = Contours [ V[p] ].x;
-				Py = Contours [ V[p] ].y;
-
+				Px = Contours [ V[p] * 2 + 0 ];
+				Py = Contours [ V[p] * 2 + 1 ];
+	
 				if ( cc.Triangulate.InsideTriangle ( Ax, Ay, Bx, By, Cx, Cy, Px, Py ) )
 				{
 					return false;
@@ -120,14 +120,14 @@ cc.Triangulate =
 		Process:function ( Contours, Results )
 		{
 			// allocate and initialize list of Vertices in polygon 	
-			var		n = Contours.length;
+			var		n = Contours.length / 2;
+
+			var		V = new Array ( n );
 
 			if ( n < 3 ) 
 			{
 				return false;
 			}
-
-			var		V = [];
 
 			// we want a counter-clockwise polygon in V 	
 			if ( 0.0 < cc.Triangulate.Area ( Contours ) )
@@ -177,18 +177,18 @@ cc.Triangulate =
 				{
 					w = 0;     // next     
 				}
-
+	
 				if ( cc.Triangulate.Snip ( Contours, u, v, w, nv, V ) )
 				{
 					var		a, b, c, s, t;
-
+		
 					// true names of the vertices 
 					a = V[u]; b = V[v]; c = V[w];
 
 					// output Triangle 
-					Results.push ( Contours[a] );
-					Results.push ( Contours[b] );
-					Results.push ( Contours[c] );
+					Results.push ( Contours [ a * 2 + 0 ] );	Results.push ( Contours [ a * 2 + 1 ] );
+					Results.push ( Contours [ b * 2 + 0 ] );	Results.push ( Contours [ b * 2 + 1 ] );
+					Results.push ( Contours [ c * 2 + 0 ] );	Results.push ( Contours [ c * 2 + 1 ] );
 
 					m++;
 
