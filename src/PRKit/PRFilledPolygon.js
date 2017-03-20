@@ -68,13 +68,8 @@ cc.PRFilledPolygon = cc.GLNode.extend
 
 		gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
 		gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
-<<<<<<< HEAD
 
 		if( Repeat == true )
-=======
-		
-		if( Repeat )
->>>>>>> 5ff9184a0773e4172d4bc8ad717092a294a83cd2
 		{
 			gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S,  gl.REPEAT );
 			gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T,  gl.REPEAT );
