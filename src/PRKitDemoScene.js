@@ -62,7 +62,9 @@ msw.PRKitDemoScene = cc.Scene.extend
 		var		Texture = cc.textureCache.addImage ( "res/pattern1.png" );
 
 		var		FilledPolygon = new cc.PRFilledPolygon ( );
-		FilledPolygon.initWithPoints ( Verts, Texture );
+
+		var Repeat = true; // this can be set to false for non-repeating big textures
+		FilledPolygon.initWithPoints ( Verts, Texture, Repeat );
 		this.addChild ( FilledPolygon ); 
 	}
 });
