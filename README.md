@@ -9,5 +9,8 @@ Cocos2D PRKit-JS
 - Use Cocos2D-IDE
 - Import this project
 
+# Limitation
+- This library will not work on canvas mode of the engine
+
 # Preview Image
 ![](https://github.com/MSW9/PRKit-JS/blob/master/screenshot.png)
