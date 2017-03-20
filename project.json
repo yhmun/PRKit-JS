@@ -13,7 +13,8 @@
     "jsList":[
         "src/GLNode/GLNode.js",
         "src/PRKit/PRFilledPolygon.js",
-        "src/PRKit/Triangulate.js",
+        //"src/PRKit/Triangulate.js",
+        "src/PRKit/earcut.min.js",
         "src/PRKitDemoScene.js",
         "src/Resource.js"
     ]

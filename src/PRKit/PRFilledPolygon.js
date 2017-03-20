@@ -77,7 +77,17 @@ cc.PRFilledPolygon = cc.GLNode.extend
 	{
 		return this.Texture;
 	},
+	earcutTriangulate: function(data)
+	{
+		var triangles = earcut(data); // earcut is from https://github.com/mapbox/earcut
+		var result = [];
+		for(i=0; i<triangles.length; i++){
+			result.push(data[2*triangles[i]]);
+			result.push(data[2*triangles[i]+1]);
 
+		}
+		return result;
+	},
 	setPoints:function ( Points )
 	{				
 		var		Verts = null;
@@ -96,7 +106,8 @@ cc.PRFilledPolygon = cc.GLNode.extend
 		}
 		
 		this.Points.splice ( 0, this.Points.length );		
-		cc.Triangulate.Process ( Verts, this.Points );	
+		//cc.Triangulate.Process ( Verts, this.Points );
+		this.Points = this.earcutTriangulate( Verts );	
 
 		if ( this.VertexBuffer != null )
 		{
