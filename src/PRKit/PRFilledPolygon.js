@@ -48,17 +48,19 @@ cc.PRFilledPolygon = cc.GLNode.extend
 		this.TexCoordBuffer	= null;		
 	},
 
-	initWithPoints:function ( Points, Texture )
+	initWithPoints:function ( Points, Texture, Repeat )
 	{
+		Repeat = typeof Repeat !== 'undefined' ? Repeat : true;
+
 		this.Shader = cc.shaderCache.getProgram ( "ShaderPositionTexture" );
 
-		this.setTexture ( Texture );
+		this.setTexture ( Texture, Repeat );
 		this.setPoints ( Points );		
 
 		return true;
 	},
 
-	setTexture:function ( Texture )
+	setTexture:function ( Texture, Repeat )
 	{
 		this.Texture = Texture;
 
@@ -66,8 +68,20 @@ cc.PRFilledPolygon = cc.GLNode.extend
 
 		gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
 		gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
-		gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT );
-		gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT );
+<<<<<<< HEAD
+
+		if( Repeat == true )
+=======
+		
+		if( Repeat )
+>>>>>>> 5ff9184a0773e4172d4bc8ad717092a294a83cd2
+		{
+			gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S,  gl.REPEAT );
+			gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T,  gl.REPEAT );
+		}else{
+			gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S,  gl.CLAMP_TO_EDGE );
+			gl.texParameteri ( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T,  gl.CLAMP_TO_EDGE );
+		}
 
 		this.updateBlendFunc ( );
 		this.calculateTextureCoordinates ( );
